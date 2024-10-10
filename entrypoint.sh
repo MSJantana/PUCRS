@@ -8,5 +8,5 @@ filebeat setup
 # # Inicializa o Filebeat em segundo plano
 filebeat -e &
 
-# # Inicia o Apache (ou outro serviço principal do container)
-exec "$@"
+# Iniciar o NGINX no foreground
+nginx -g 'daemon off;'

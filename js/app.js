@@ -14,13 +14,17 @@ cardapio.eventos = {
 
 }
 
-cardapio.metodos ={
+cardapio.metodos = {
 
-    obterItensCardapio: (categoria = 'burgers') => {
+    obterItensCardapio: (categoria = 'burgers', vermais = false) => {
         let filtro = MENU [categoria];
         console.log(filtro);
 
-        $("#itensCardapio").html('');
+        if(!vermais) {
+            $("#itensCardapio").html('');
+            $("#btnVermais").removeClass('hidden');
+        }
+       
 
         $.each(filtro, (i,e) => {
 
@@ -29,17 +33,38 @@ cardapio.metodos ={
             .replace(/\${price}/g, e.price.toFixed(2).replace('.', ','));
 
 
-            $("#itensCardapio").append(temp);
+            if(vermais && i >= 8 && i < 12){
+                $("#itensCardapio").append(temp);
+
+            }
+
+            //paginação inicial
+
+            if (!vermais && i < 8) {
+                $("#itensCardapio").append(temp);
+            }            
             
         })
 
         //remove o ativo
         $(".container-menu a").removeClass('active');
 
-        $("menu-" + categoria).addClass('active');
+        //coloca ativo o botão novamente
+
+        $("#menu-" + categoria).addClass('active');
 
 
     },
+
+    verMais: ( ) => {
+        
+        let ativo = $(".container-menu a.active").attr('id').split('menu-')[1];
+
+        cardapio.metodos.obterItensCardapio(ativo, true);
+
+        $("#btnVermais").addClass('hidden');
+
+    }
 }
 
 cardapio.templates = {
